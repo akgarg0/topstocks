@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Markets</title>
+</head>
+<body>
+    <nav>
+        <h1>Stock Markets</h1>
+        <form method="get" action="/">
+            <button type="submit">Top 10</button>
+        </form>
+        <form method="post" action="/">
+            <input name="name" type="search" value="" placeholder="Enter name of the Market"></input>
+            <button type="submit">Search</button>
+        </form>
+    </nav>
+    <section>
+        <table>
+            <tr>
+                % for head in headers:
+                <th>${head}</th>
+                % endfor
+            </tr>
+            % for row in data:
+            <tr>
+                % for head in headers:
+                <td>${row[head]}</td>
+                % endfor
+            </tr>
+            % endfor
+        </table>
+    </section>
+
+</body>
+</html>

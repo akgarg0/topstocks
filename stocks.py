@@ -25,6 +25,3 @@ class BhavCopy:
         z_file.extractall('tmp')
         z_file.close()
         os.remove(f_path)
-
-bc = BhavCopy()
-bc.download_zip()

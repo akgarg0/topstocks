@@ -1,4 +1,5 @@
 import csv
+
 DEFAULT_FIELDS = {
                 'SC_CODE': 'CODE',
                 'SC_NAME': 'NAME',
@@ -29,10 +30,6 @@ class CSVFile:
             new_row = {}
             for field in row:
                 if field in fields:
-                    new_row[fields[field]] = row[field]
+                    new_row[fields[field]] = row[field].trim()
             data.append(new_row)
         return data
-
-cf = CSVFile('tmp/EQ020819.csv')
-print(cf.csv_to_obj())
-

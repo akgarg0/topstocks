@@ -1,5 +1,8 @@
 import redis
 import pickle
+import os
+
+import parseFile
 
 
 class DataBase:
@@ -9,17 +12,33 @@ class DataBase:
         """
         with open('credentials.cred', 'rb') as cred:
             self.redis_cred = pickle.load(cred)
-        self.r = redis.Redis(**self.redis_cred)
+        self.r = redis.Redis(**self.redis_cred, charset="utf-8", decode_responses=True)
 
-    def load_csv_to_db(self):
+    def load_csv_to_db(self, path='tmp'):
         """
         loads data from CSV file to Redis DB
         """
         r = self.r
-        data = [{'NAME': 'ALPHA', 'CODE': 12452, 'open': '1234.6'}]
+        csv_handle = ''
+        for root, dirs, files in os.walk(path):
+            file = files[0]
+            file_path = os.path.join('tmp', file)
+            csv_handle = parseFile.CSVFile(file_path)
+        data = csv_handle.csv_to_obj()
+        print(data)
+        pipe = r.pipeline()
+        n = 1
         for row in data:
             data_key = row.pop('NAME')
-            r.hmset(data_key, row)
+            pipe.hmset(data_key, row)
+            n = n + 1
+            if (n % 1024) == 0:
+                pipe.execute()
+                pipe = r.pipeline()
+        pipe.execute()
+        # for row in data:
+        #     data_key = row.pop('NAME')
+        #     r.hmset(data_key, row)
 
     def get_top_10_or_searched(self, name=''):
         """
@@ -30,8 +49,12 @@ class DataBase:
         r = self.r
         data_keys = r.keys()
         data = []
-        for index in range(min(10, len(data_keys))):
-            if name not in str(data_keys[index]):
+        count = 0;
+        for index in range(len(data_keys)):
+            count = count + 1
+            if count == 10:
+                break
+            if name.lower() not in str(data_keys[index]).lower():
                 continue
             row = r.hgetall(data_keys[index])
             row['NAME'] = data_keys[index]
@@ -43,12 +66,17 @@ class DataBase:
         Clears all the data from redis db
         """
         r = self.r
+        pipe = r.pipeline()
+        n = 1
         for data_key in r.keys():
-            print(data_key, r.hgetall(data_key))
-            r.delete(data_key)
+            pipe.delete(data_key)
+            n = n + 1
+            if (n % 1024) == 0:
+                pipe.execute()
+                pipe = r.pipeline()
+        pipe.execute()
 
 
-red = DataBase()
-# red.load_csv_to_db()
+# red = DataBase()
 # red.delete_all()
 # print(red.get_top_10_or_searched())
