@@ -43,19 +43,3 @@ class CherryServer:
         red = database.DataBase()
         red.delete_all()
         return self.common()
-
-
-if __name__ == '__main__':
-    conf = {
-        '/': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-            'tools.sessions.on': True,
-            'tools.response_headers.on': True,
-            'tools.response_headers.headers': [('Content-Type', 'text/html')],
-        },
-        '/css': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.abspath("public/css")
-        },
-    }
-    cherrypy.quickstart(CherryServer(), '/', conf)
