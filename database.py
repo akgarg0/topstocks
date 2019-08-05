@@ -13,9 +13,9 @@ class DataBase:
         # with open('credentials.cred', 'rb') as cred:
         #     self.redis_cred = pickle.load(cred)
         # self.r = redis.Redis(**self.redis_cred, charset="utf-8", decode_responses=True)
-        host = os.environ['host']
-        port = os.environ['port']
-        password = os.environ['password']
+        host = os.environ['redis_host']
+        port = os.environ['redis_port']
+        password = os.environ['redis_password']
         self.r = redis.Redis(host=host, port=port, password=password, charset="utf-8", decode_responses=True)
 
 
