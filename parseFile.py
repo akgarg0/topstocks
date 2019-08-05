@@ -30,6 +30,6 @@ class CSVFile:
             new_row = {}
             for field in row:
                 if field in fields:
-                    new_row[fields[field]] = row[field].trim()
+                    new_row[fields[field]] = row[field]
             data.append(new_row)
         return data

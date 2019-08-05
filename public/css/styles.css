@@ -1,0 +1,113 @@
+.centered-wrapper {
+    position: relative;
+    text-align: center;
+}
+.centered-wrapper:before {
+    content: "";
+    position: relative;
+    display: inline-block;
+    width: 0; height: 100%;
+    vertical-align: middle;
+}
+.centered-content {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1000px;
+}
+
+nav {
+    width: 100%;
+    height: auto;
+    display: inherit;
+    text-align: center;
+    background-image: linear-gradient(#0305b3, #37acff);
+}
+
+h1 {
+    color: white;
+    font-size: 40px;
+    font-family: monospace;
+}
+
+form {
+    display: inline-block;
+}
+
+button {
+    background: black;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-family: fantasy;
+    width: 150px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: white;
+    color: black;
+}
+
+input {
+    width: 370px;
+    height: 40px;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 0px;
+}
+
+div.note {
+    padding: 200px;
+    font-size: 40px;
+    font-family: fantasy;
+}
+
+section {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    background: #fffbf1;
+}
+
+table {
+    font-family: sans-serif;
+    border-collapse: collapse;
+}
+
+tr {
+    height: 60px;
+    border: 1px solid;
+}
+
+tr:nth-child(even) {
+  background: #f8ebc9;
+}
+
+th {
+    width: 200px;
+    border: 1px solid black;
+    background: black;
+    color: wheat;
+}
+
+footer {
+    width: 100%;
+    margin-top: 10px;
+    border-top: 5px solid;
+    height: 100px;
+}
+
+p {
+    font-size: 16px;
+    font-style: italic;
+    font-family: monospace;
+    text-align: center;
+}
+
+div.copyright {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: end;
+}

@@ -9,22 +9,24 @@ import database
 
 @cherrypy.expose
 class CherryServer:
-    @cherrypy.tools.accept(media='text/html')
-    def GET(self):
-        red = database.DataBase()
-        data = red.get_top_10_or_searched()
-        headers = parseFile.DEFAULT_FIELDS.values()
-        print(data)
-        print(headers)
-        return Template(filename="public/ListSearch.html").render(data=data, headers=headers)
-
-    def POST(self, name=''):
+    def common(self, name=""):
         red = database.DataBase()
         data = red.get_top_10_or_searched(name)
         headers = parseFile.DEFAULT_FIELDS.values()
         return Template(filename="public/ListSearch.html").render(data=data, headers=headers)
 
-    def PUT(self, another_string):
+    @cherrypy.tools.accept(media='text/html')
+    def GET(self):
+        return self.common()
+
+    def POST(self, name='', _method=''):
+        if _method == 'put':
+            return self.PUT()
+        elif _method == 'delete':
+            return self.DELETE()
+        return self.common(name)
+
+    def PUT(self):
         path = 'tmp'
         for root, dirs, files in os.walk(path):
             for file in files:
@@ -35,12 +37,12 @@ class CherryServer:
         red = database.DataBase()
         red.delete_all()
         red.load_csv_to_db()
-        return "New Data Fetched Successfully"
+        return self.common()
 
     def DELETE(self):
         red = database.DataBase()
         red.delete_all()
-        return "Data Deleted Successfully"
+        return self.common()
 
 
 if __name__ == '__main__':
@@ -50,6 +52,10 @@ if __name__ == '__main__':
             'tools.sessions.on': True,
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/html')],
-        }
+        },
+        '/css': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': os.path.abspath("public/css")
+        },
     }
     cherrypy.quickstart(CherryServer(), '/', conf)

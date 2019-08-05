@@ -49,13 +49,13 @@ class DataBase:
         r = self.r
         data_keys = r.keys()
         data = []
-        count = 0;
+        count = 0
         for index in range(len(data_keys)):
-            count = count + 1
             if count == 10:
                 break
             if name.lower() not in str(data_keys[index]).lower():
                 continue
+            count = count + 1
             row = r.hgetall(data_keys[index])
             row['NAME'] = data_keys[index]
             data.append(row)

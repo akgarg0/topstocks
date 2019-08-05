@@ -2,35 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title>Stock Markets</title>
 </head>
-<body>
-    <nav>
-        <h1>Stock Markets</h1>
-        <form method="get" action="/">
-            <button type="submit">Top 10</button>
-        </form>
-        <form method="post" action="/">
-            <input name="name" type="search" value="" placeholder="Enter name of the Market"></input>
-            <button type="submit">Search</button>
-        </form>
-    </nav>
-    <section>
-        <table>
-            <tr>
-                % for head in headers:
-                <th>${head}</th>
+<body class="centered-wrapper">
+    <span class="centered-content">
+        <nav>
+            <h1>Stock Markets</h1>
+            <form method="post" action="/">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" style="color: red">Clear DB</button>
+            </form>
+            <form method="post" action="/">
+                <input type="hidden" name="_method" value="put" />
+                <button type="submit">Re-populate</button>
+            </form>
+            <form method="get" action="/">
+                <button type="submit">Top 10</button>
+            </form>
+            <form method="post" action="/">
+                <input name="name" type="search" value="" placeholder="Enter name of the Market"></input>
+                <button type="submit">Search</button>
+            </form>
+        </nav>
+        <section>
+            % if len(data) == 0:
+            <div class="note">Redis Database is Empty</div>
+            % endif
+            % if len(data) != 0:
+            <table>
+                <tr>
+                    % for head in headers:
+                    <th>${head}</th>
+                    % endfor
+                </tr>
+                % for row in data:
+                <tr>
+                    % for head in headers:
+                    <td>${row[head]}</td>
+                    % endfor
+                </tr>
                 % endfor
-            </tr>
-            % for row in data:
-            <tr>
-                % for head in headers:
-                <td>${row[head]}</td>
-                % endfor
-            </tr>
-            % endfor
-        </table>
-    </section>
-
+            </table>
+            % endif
+        </section>
+        <footer>
+            <p>** Note: Page will fetch at max 10 entities at a time **</p>
+            <div class="copyright">
+                copyright by Ashwani Garg
+            </div>
+        </footer>
+    </span>
 </body>
 </html>
